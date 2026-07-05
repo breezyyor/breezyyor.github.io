@@ -1,0 +1,594 @@
+<!DOCTYPE html><meta property="og:title" content="Breezy Yor — Video & Content Creator">
+<meta property="og:description" content="Cinematic edits, AI-driven storytelling, and campaigns built to travel across the feed.">
+<meta property="og:image" content="https://breezyyor.github.io/preview.jpg">
+<meta property="og:url" content="https://breezyyor.github.io/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Breezy Yor — Video & Content Creator">
+<meta name="twitter:description" content="Cinematic edits, AI-driven storytelling, and campaigns built to travel across the feed.">
+<meta name="twitter:image" content="https://breezyyor.github.io/preview.jpg">
+<html lang="en" data-theme="dark">
+<head>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/favicon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breezy Yor -- Video &amp; Content Creator</title>
+<meta name="description" content="Breezy Yor -- video and content creator. Cinematic edits, AI-driven storytelling, and campaigns built to travel across the feed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0A0B0D;
+    --bg-elevated: #14171C;
+    --bg-elevated-2: #1B1F26;
+    --text: #ECEDEE;
+    --text-muted: #8A9099;
+    --border: rgba(236,237,238,0.10);
+    --rec: #FF4747;
+    --teal: #2C9C93;
+    --gold: #E8B34C;
+    --shadow: 0 20px 60px rgba(0,0,0,0.45);
+    --grain-opacity: 0.05;
+  }
+  html[data-theme="light"]{
+    --bg: #F2F0EA;
+    --bg-elevated: #E9E6DE;
+    --bg-elevated-2: #DFDCD3;
+    --text: #14171C;
+    --text-muted: #5B5F66;
+    --border: rgba(20,23,28,0.10);
+    --rec: #D93A3A;
+    --teal: #1E7A72;
+    --gold: #B5822A;
+    --shadow: 0 20px 60px rgba(0,0,0,0.10);
+    --grain-opacity: 0.03;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+    transition:background .4s ease, color .4s ease;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  .display{ font-family:'Bebas Neue', sans-serif; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+  section{ position:relative; padding: 140px 8vw 100px; }
+  ::selection{ background:var(--rec); color:#fff; }
+
+  /* film grain overlay */
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:5;
+    opacity:var(--grain-opacity); mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ===== TOP BAR / TIMELINE SCRUBBER ===== */
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:linear-gradient(to bottom, var(--bg) 70%, transparent);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--border);
+  }
+  .topbar-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 8vw 10px;
+  }
+  .logo{ font-size:1.4rem; display:flex; align-items:center; gap:8px; }
+  .rec-dot{
+    width:8px; height:8px; border-radius:50%; background:var(--rec);
+    animation:pulse 1.6s infinite ease-in-out;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.25;} }
+  .timecode{ font-size:0.75rem; color:var(--text-muted); letter-spacing:0.05em; }
+
+  .nav-right{ display:flex; align-items:center; gap:22px; }
+  .nav-links{ display:flex; gap:22px; font-size:0.8rem; }
+  .nav-links a{
+    color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em;
+    font-weight:600; transition:color .2s ease;
+  }
+  .nav-links a:hover, .nav-links a.active{ color:var(--text); }
+
+  .theme-toggle{
+    width:36px; height:36px; border-radius:50%; border:1px solid var(--border);
+    background:var(--bg-elevated); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:transform .2s ease, background .3s ease;
+  }
+  .theme-toggle:hover{ transform:scale(1.08); }
+  .theme-toggle svg{ width:16px; height:16px; }
+
+  .menu-toggle{ display:none; }
+
+  /* scrubber track */
+  .scrub-track{
+    position:relative; height:3px; margin:0 8vw 6px; background:var(--border);
+    border-radius:2px; overflow:visible;
+  }
+  .scrub-fill{
+    position:absolute; top:0; left:0; height:100%; width:0%;
+    background:linear-gradient(90deg, var(--rec), var(--gold));
+    border-radius:2px; transition:width .05s linear;
+  }
+  .scrub-playhead{
+    position:absolute; top:50%; left:0%; width:11px; height:11px;
+    background:var(--gold); border-radius:2px; transform:translate(-50%,-50%) rotate(45deg);
+    box-shadow:0 0 0 3px var(--bg), 0 0 12px rgba(232,179,76,.6);
+    transition:left .05s linear;
+  }
+  .scrub-marks{ position:relative; margin:0 8vw 14px; display:flex; justify-content:space-between; }
+  .scrub-marks span{ font-size:0.62rem; color:var(--text-muted); }
+
+  /* ===== HERO ===== */
+  .hero{
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    padding-top:120px; position:relative;
+  }
+  .frame-corner{
+    position:absolute; width:34px; height:34px; border-color:var(--text-muted);
+    opacity:.5;
+  }
+  .frame-corner.tl{ top:110px; left:8vw; border-top:2px solid; border-left:2px solid; }
+  .frame-corner.tr{ top:110px; right:8vw; border-top:2px solid; border-right:2px solid; }
+  .frame-corner.bl{ bottom:40px; left:8vw; border-bottom:2px solid; border-left:2px solid; }
+  .frame-corner.br{ bottom:40px; right:8vw; border-bottom:2px solid; border-right:2px solid; }
+
+  .eyebrow{
+    color:var(--rec); font-size:0.78rem; letter-spacing:0.18em; text-transform:uppercase;
+    font-weight:700; margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{ content:''; width:26px; height:1px; background:var(--rec); }
+
+  .hero h1{
+    font-size:clamp(4.5rem, 13vw, 11rem); line-height:0.9; color:var(--text);
+  }
+  .hero-sub{
+    max-width:560px; font-size:1.15rem; color:var(--text-muted); margin-top:26px; line-height:1.6;
+  }
+  .hero-ctas{ display:flex; gap:16px; margin-top:44px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:14px 28px; border-radius:2px;
+    font-weight:600; font-size:0.85rem; letter-spacing:0.03em; text-transform:uppercase;
+    cursor:pointer; transition:all .25s ease; border:1px solid transparent;
+  }
+  .btn-primary{ background:var(--text); color:var(--bg); }
+  .btn-primary:hover{ background:var(--rec); color:#fff; transform:translateY(-2px); }
+  .btn-ghost{ border-color:var(--border); color:var(--text); }
+  .btn-ghost:hover{ border-color:var(--text-muted); transform:translateY(-2px); }
+
+  .hero-meta{
+    position:absolute; right:8vw; bottom:40px; text-align:right;
+    color:var(--text-muted); font-size:0.72rem; display:none;
+  }
+
+  /* ===== SCENE HEADER (reused across sections) ===== */
+  .scene-eyebrow{
+    display:flex; align-items:center; gap:14px; margin-bottom:28px;
+  }
+  .scene-num{
+    font-size:0.78rem; color:var(--gold); font-weight:600; letter-spacing:0.1em;
+  }
+  .scene-line{ flex:1; height:1px; background:var(--border); }
+  .scene-time{ font-size:0.72rem; color:var(--text-muted); }
+
+  .section-title{
+    font-size:clamp(2.4rem, 5vw, 3.6rem); margin-bottom:20px; line-height:1;
+  }
+
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.visible{ opacity:1; transform:translateY(0); }
+
+  /* ===== ABOUT ===== */
+  .about-grid{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px; align-items:start;
+  }
+  .about-text p{ color:var(--text-muted); font-size:1.05rem; line-height:1.85; margin-bottom:20px; }
+  .about-text strong{ color:var(--text); font-weight:700; }
+
+  .stat-card{
+    background:var(--bg-elevated); border:1px solid var(--border); border-radius:6px;
+    padding:26px; margin-bottom:16px; transition:transform .25s ease, border-color .25s ease;
+  }
+  .stat-card:hover{ transform:translateX(-4px); border-color:var(--teal); }
+  .stat-num{ font-family:'JetBrains Mono',monospace; font-size:1.6rem; color:var(--teal); font-weight:600; }
+  .stat-label{ font-size:0.8rem; color:var(--text-muted); margin-top:4px; text-transform:uppercase; letter-spacing:0.05em; }
+
+  /* ===== SKILLS ===== */
+  .skills-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; margin-top:40px;
+  }
+  .skill-card{
+    background:var(--bg-elevated); border:1px solid var(--border); border-radius:8px;
+    padding:30px 26px; transition:transform .3s ease, border-color .3s ease, background .3s ease;
+    position:relative; overflow:hidden;
+  }
+  .skill-card::before{
+    content:''; position:absolute; top:0; left:0; width:3px; height:100%;
+    background:var(--rec); transform:scaleY(0); transform-origin:bottom; transition:transform .3s ease;
+  }
+  .skill-card:hover{ transform:translateY(-6px); border-color:var(--border); background:var(--bg-elevated-2); }
+  .skill-card:hover::before{ transform:scaleY(1); }
+  .skill-tag{
+    font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:var(--gold);
+    letter-spacing:0.05em; margin-bottom:14px; display:block;
+  }
+  .skill-card h3{ font-size:1.15rem; margin-bottom:10px; font-weight:700; }
+  .skill-card p{ color:var(--text-muted); font-size:0.92rem; line-height:1.6; }
+
+  /* ===== PROJECTS ===== */
+  .project-list{ display:flex; flex-direction:column; margin-top:20px; }
+  .project-row{
+    display:grid; grid-template-columns:80px 1.6fr 2fr; gap:30px; align-items:center;
+    padding:36px 0; border-top:1px solid var(--border); cursor:default;
+    transition:padding .3s ease;
+  }
+  .project-row:last-child{ border-bottom:1px solid var(--border); }
+  .project-row:hover{ padding-left:14px; }
+  .project-idx{ font-family:'JetBrains Mono',monospace; color:var(--text-muted); font-size:0.9rem; }
+  .project-title{ font-size:1.5rem; font-weight:700; }
+  .project-title span{ display:block; font-size:0.7rem; color:var(--teal); font-weight:600; letter-spacing:0.08em; margin-top:8px; text-transform:uppercase; }
+  .project-desc{ color:var(--text-muted); font-size:0.98rem; line-height:1.7; }
+  .project-tools{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .tool-pill{
+    font-family:'JetBrains Mono',monospace; font-size:0.65rem; padding:4px 10px;
+    border:1px solid var(--border); border-radius:20px; color:var(--text-muted);
+  }
+
+  /* ===== CONTACT ===== */
+  .contact-wrap{
+    display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+  }
+  .contact-big{ font-size:clamp(2.6rem, 6vw, 4.4rem); line-height:1.05; }
+  .contact-big .accent{ color:var(--rec); }
+  .contact-note{ color:var(--text-muted); margin-top:24px; max-width:420px; line-height:1.7; }
+
+  .social-list{ display:flex; flex-direction:column; gap:2px; }
+  .social-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:22px 4px; border-top:1px solid var(--border); transition:padding .25s ease, color .25s ease;
+  }
+  .social-list .social-row:last-child{ border-bottom:1px solid var(--border); }
+  .social-row:hover{ padding-left:14px; color:var(--teal); }
+  .social-name{ font-size:1.15rem; font-weight:700; }
+  .social-handle{ font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--text-muted); }
+  .social-arrow{ font-size:1.2rem; transition:transform .25s ease; }
+  .social-row:hover .social-arrow{ transform:translate(4px,-4px); }
+
+  footer{
+    padding:40px 8vw; border-top:1px solid var(--border);
+    display:flex; justify-content:space-between; align-items:center;
+    color:var(--text-muted); font-size:0.78rem; flex-wrap:wrap; gap:10px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px){
+    .about-grid, .contact-wrap{ grid-template-columns:1fr; gap:36px; }
+    .skills-grid{ grid-template-columns:repeat(2, 1fr); }
+    .project-row{ grid-template-columns:1fr; gap:10px; }
+    .nav-links{ display:none; }
+    .scrub-marks span:not(:first-child):not(:last-child){ display:none; }
+  }
+  @media (max-width: 560px){
+    section{ padding:100px 6vw 70px; }
+    .skills-grid{ grid-template-columns:1fr; }
+    .topbar-inner{ padding:14px 6vw 8px; }
+    .scrub-track, .scrub-marks{ margin-left:6vw; margin-right:6vw; }
+    .frame-corner{ display:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Breezy Yor",
+  "url": "https://breezyyor.github.io/",
+  "image": "https://breezyyor.github.io/preview.jpg",
+  "jobTitle": "Video & Content Creator",
+  "sameAs": [
+    "https://www.instagram.com/breezy_yor",
+    "https://x.com/breezy_yor",
+    "https://www.facebook.com/breezyyor",
+    "https://www.youtube.com/@breezy_yor"
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="logo display">
+      <span class="rec-dot"></span> <img src="images/profile.png" width="150" alt="Breezy Yor - video and content creator">
+    </div>
+    <div class="nav-right">
+      <nav class="nav-links mono">
+        <a href="#home" data-sec="home">Home</a>
+        <a href="#about" data-sec="about">About</a>
+        <a href="#skills" data-sec="skills">Skills</a>
+        <a href="#projects" data-sec="projects">Projects</a>
+        <a href="#contact" data-sec="contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark and light mode">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="scrub-track" id="scrubTrack">
+    <div class="scrub-fill" id="scrubFill"></div>
+    <div class="scrub-playhead" id="scrubPlayhead"></div>
+  </div>
+  <div class="scrub-marks mono">
+    <span>00:00</span><span>00:24</span><span>00:48</span><span>01:12</span><span>01:36</span>
+  </div>
+</header>
+
+<!-- HERO / HOME -->
+<section id="home" class="hero">
+  <div class="frame-corner tl"></div>
+  <div class="frame-corner tr"></div>
+  <div class="frame-corner bl"></div>
+  <div class="frame-corner br"></div>
+
+  <div class="eyebrow mono">REC <span id="heroTimecode">00:00:00:00</span></div>
+  <h1 class="display">BREEZY YOR<br></h1>
+  <p class="hero-sub">Video &amp; content creator. I turn ideas, causes, and culture into cinematic edits, AI-generated shorts, and campaigns built to travel across the feed -- from first frame to final caption.</p>
+  <div class="hero-ctas">
+    <a href="#projects" class="btn btn-primary">View Work</a>
+    <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+  </div>
+
+  <div class="hero-meta mono">
+    SHOT ON: IMAGINATION<br>
+    ASPECT: 16:9 / 9:16<br>
+    STATUS: AVAILABLE FOR PROJECTS
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="scene-eyebrow reveal">
+    <span class="scene-num mono">SCENE 01</span>
+    <div class="scene-line"></div>
+    <span class="scene-time mono">00:24</span>
+  </div>
+  <h2 class="section-title display reveal">About</h2>
+
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm <strong>Breezy Yor</strong> -- a video and content creator who works at the intersection of <strong>storytelling, sound, and speed</strong>. My process usually starts with a moment worth reacting to, and ends with it living natively across Instagram, X, Facebook, and YouTube -- each version cut for how that platform actually gets watched.</p>
+      <p>I'm just as comfortable directing a scene through a text prompt in an AI video tool as I am color-grading a traditional edit. That mix lets me move fast without cutting corners on craft -- whether the brief is a brand campaign, a music-led visual, or a cultural moment that needs to be seen.</p>
+      <p>Recent work has leaned into <strong>creative activism</strong> -- building full campaigns (song, poster, video, caption) around issues that matter to a younger audience, and shipping them at the speed the internet actually moves.</p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-card">
+        <div class="stat-num mono">4</div>
+        <div class="stat-label">Platforms, one story each time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num mono">01</div>
+        <div class="stat-label">Pipeline: song → poster → video → caption</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num mono">EN / HI</div>
+        <div class="stat-label">Fluent in mixed-language content</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="scene-eyebrow reveal">
+    <span class="scene-num mono">SCENE 02</span>
+    <div class="scene-line"></div>
+    <span class="scene-time mono">00:48</span>
+  </div>
+  <h2 class="section-title display reveal">Skills</h2>
+
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <span class="skill-tag">01 / EDIT</span>
+      <h3>Video Editing &amp; Motion</h3>
+      <p>Pacing, color, sound design, and transitions built for retention -- cut for the platform, not just the timeline.</p>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-tag">02 / AI GEN</span>
+      <h3>AI Video Generation</h3>
+      <p>Prompt-crafting across Kling AI, Runway Gen-4, Luma Dream Machine and Pika for cinematic and comedic effect.</p>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-tag">03 / SOUND</span>
+      <h3>Music &amp; Sound</h3>
+      <p>Original tracks built for campaigns -- from concept and lyrics to fully produced, release-ready audio.</p>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-tag">04 / DESIGN</span>
+      <h3>Visual Design</h3>
+      <p>Animated posters, coded motion graphics, and AI art direction across Midjourney, DALL·E 3, and Flux.</p>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-tag">05 / STRATEGY</span>
+      <h3>Social Strategy</h3>
+      <p>Platform-specific captions, hashtags, and posting cadence tuned separately for IG, X, Facebook, and YouTube.</p>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-tag">06 / VOICE</span>
+      <h3>Storytelling for Causes</h3>
+      <p>Turning real issues into content a younger audience actually stops to watch, shares, and acts on.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="scene-eyebrow reveal">
+    <span class="scene-num mono">SCENE 03</span>
+    <div class="scene-line"></div>
+    <span class="scene-time mono">01:12</span>
+  </div>
+  <h2 class="section-title display reveal">Projects</h2>
+
+  <div class="project-list">
+        <div class="project-row reveal">
+      <div class="project-idx">01</div>
+      <div class="project-title">Cinematic AI Shorts<span>Prompt-directed video series</span></div>
+      <div>
+        <p class="project-desc">A series of short films directed entirely through text prompts -- exploring how far a single line of direction can carry tone, timing, and comedy across different AI video engines.</p>
+        <div class="project-tools">
+          <span class="tool-pill">Kling AI</span>
+          <span class="tool-pill">Runway Gen-4</span>
+          <span class="tool-pill">Luma Dream Machine</span>
+          <span class="tool-pill">Pika 2.0</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-row reveal">
+      <div class="project-idx">02</div>
+      <div class="project-title">Cross-Platform Content Engine<span>Distribution system</span></div>
+      <div>
+        <p class="project-desc">A repeatable system for adapting one story into an Instagram reel, an X thread, a Facebook post, and a YouTube upload -- each tuned to how that platform's audience actually scrolls.</p>
+        <div class="project-tools">
+          <span class="tool-pill">Instagram</span>
+          <span class="tool-pill">X</span>
+          <span class="tool-pill">Facebook</span>
+          <span class="tool-pill">YouTube</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="scene-eyebrow reveal">
+    <span class="scene-num mono">SCENE 04</span>
+    <div class="scene-line"></div>
+    <span class="scene-time mono">01:36</span>
+  </div>
+
+  <div class="contact-wrap">
+    <div class="reveal">
+      <h2 class="contact-big display">LET'S MAKE<br>SOMETHING <span class="accent">SHAREABLE.</span></h2>
+      <p class="contact-note">Open to collaborations, campaigns, and cultural moments worth capturing. The fastest way to reach me is through the socials below -- DMs are open.</p>
+    </div>
+
+    <div class="social-list reveal">
+      <a class="social-row" href="https://www.instagram.com/breezy_yor" target="_blank" rel="noopener">
+        <div><div class="social-name">Instagram</div><div class="social-handle mono">@breezy_yor</div></div>
+        <span class="social-arrow">↗</span>
+      </a>
+      <a class="social-row" href="https://x.com/breezy_yor" target="_blank" rel="noopener">
+        <div><div class="social-name">X</div><div class="social-handle mono">@breezy_yor</div></div>
+        <span class="social-arrow">↗</span>
+      </a>
+      <a class="social-row" href="https://www.facebook.com/breezyyor" target="_blank" rel="noopener">
+        <div><div class="social-name">Facebook</div><div class="social-handle mono">/breezyyor</div></div>
+        <span class="social-arrow">↗</span>
+      </a>
+      <a class="social-row" href="https://www.youtube.com/@breezy_yor" target="_blank" rel="noopener">
+        <div><div class="social-name">YouTube</div><div class="social-handle mono">@breezy_yor</div></div>
+        <span class="social-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© <span id="year"></span> Breezy Yor. All rights reserved.</span>
+  <span class="mono">Built frame by frame.</span>
+</footer>
+
+<script>
+  // ---- Year ----
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ---- Theme toggle ----
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const sunPath = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+  const moonPath = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+
+  function applyThemeIcon(theme){
+    themeIcon.innerHTML = theme === 'dark' ? sunPath : moonPath;
+  }
+  const stored = null; // no localStorage per artifact constraints; default dark each load
+  applyThemeIcon('dark');
+
+  themeToggle.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    applyThemeIcon(next);
+  });
+
+  // ---- Timeline scrubber + timecode ----
+  const scrubFill = document.getElementById('scrubFill');
+  const scrubPlayhead = document.getElementById('scrubPlayhead');
+  const heroTimecode = document.getElementById('heroTimecode');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const sections = ['home','about','skills','projects','contact'].map(id => document.getElementById(id));
+
+  function formatTimecode(frac){
+    // fake broadcast timecode HH:MM:SS:FF driven by scroll fraction
+    const totalFrames = Math.floor(frac * (60*60*30)); // pretend max ~1hr at 30fps window
+    const ff = totalFrames % 30;
+    const totalSeconds = Math.floor(totalFrames / 30);
+    const ss = totalSeconds % 60;
+    const mm = Math.floor(totalSeconds / 60) % 60;
+    const hh = Math.floor(totalSeconds / 3600);
+    const pad = n => String(n).padStart(2,'0');
+    return `${pad(hh)}:${pad(mm)}:${pad(ss)}:${pad(ff)}`;
+  }
+
+  function onScroll(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const frac = docHeight > 0 ? Math.min(Math.max(scrollTop / docHeight, 0), 1) : 0;
+
+    scrubFill.style.width = (frac*100) + '%';
+    scrubPlayhead.style.left = (frac*100) + '%';
+    heroTimecode.textContent = formatTimecode(frac);
+
+    // active nav link
+    let activeId = 'home';
+    for(const sec of sections){
+      const rect = sec.getBoundingClientRect();
+      if(rect.top <= 140){ activeId = sec.id; }
+    }
+    navLinks.forEach(a => a.classList.toggle('active', a.dataset.sec === activeId));
+  }
+  document.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  // ---- Scroll reveal ----
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
